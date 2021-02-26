@@ -1,0 +1,59 @@
+{
+    "name": "palpalani/laravel-dns-deny-list-check",
+    "description": "checks if the given IP address or hostname is blacklisted on the configured dnsbl servers",
+    "keywords": [
+        "palpalani",
+        "laravel-dns-deny-list-check"
+    ],
+    "homepage": "https://github.com/palpalani/laravel-dns-deny-list-check",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "palPalani",
+            "email": "palani.p@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "spatie/laravel-package-tools": "^1.1",
+        "illuminate/contracts": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.3",
+        "spatie/laravel-ray": "^1.9",
+        "vimeo/psalm": "^4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PalPalani\\LaravelDnsDenyListCheck\\": "src",
+            "PalPalani\\LaravelDnsDenyListCheck\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PalPalani\\LaravelDnsDenyListCheck\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PalPalani\\LaravelDnsDenyListCheck\\LaravelDnsDenyListCheckServiceProvider"
+            ],
+            "aliases": {
+                "LaravelDnsDenyListCheck": "PalPalani\\LaravelDnsDenyListCheck\\LaravelDnsDenyListCheckFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
