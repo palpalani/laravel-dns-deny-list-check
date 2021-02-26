@@ -102,24 +102,32 @@ class LaravelDnsDenyListCheck
 
         $reverseIp = \implode('.', \array_reverse(\explode('.', $ip)));
 
-        foreach ($dnsblLookup as $host) {
-            $dnsr = $reverseIp . '.' . $host . '.';
-            if (\checkdnsrr($dnsr, 'A')) {
-                $listed = true;
-            } else {
-                $listed = false;
+        try {
+            foreach ($dnsblLookup as $host) {
+                $dnsr = $reverseIp . '.' . $host . '.';
+                if (\checkdnsrr($dnsr, 'A')) {
+                    $listed = true;
+                } else {
+                    $listed = false;
+                }
+
+                $result[] = [
+                    'host' => $host,
+                    'listed' => $listed,
+                ];
             }
 
-            $result[] = [
-                'host' => $host,
-                'listed' => $listed,
+            return [
+                'success' => true,
+                'message' => '',
+                'data' => $result,
+            ];
+        } catch (\Throwable $exception) {
+            return [
+                'success' => false,
+                'message' => $exception->getMessage(),
+                'data' => null,
             ];
         }
-
-        return [
-            'success' => true,
-            'message' => '',
-            'data' => $result,
-        ];
     }
 }

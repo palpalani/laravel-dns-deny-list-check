@@ -31,7 +31,7 @@ return [
 ## Usage
 
 ```php
-$check = new palPalani\LaravelDnsDenyListCheck();
+$check = new palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheck();
 echo $check->echoPhrase('Hello, palPalani!');
 ```
 
