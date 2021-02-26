@@ -2,9 +2,9 @@
 
 namespace PalPalani\LaravelDnsDenyListCheck;
 
+use PalPalani\LaravelDnsDenyListCheck\Commands\LaravelDnsDenyListCheckCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use PalPalani\LaravelDnsDenyListCheck\Commands\LaravelDnsDenyListCheckCommand;
 
 class LaravelDnsDenyListCheckServiceProvider extends PackageServiceProvider
 {
