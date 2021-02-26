@@ -10,6 +10,11 @@ class LaravelDnsDenyListCheck
      */
     public function check(string $ip): array
     {
+        /**
+         * Use: https://github.com/tbreuss/dns-blacklist-check
+         * https://gist.github.com/tbreuss/74da96ff5f976ce770e6628badbd7dfc
+         * https://mxtoolbox.com/problem/blacklist/
+         */
         $dnsblLookup = [
             'all.s5h.net',
 //            "b.barracudacentral.org",
