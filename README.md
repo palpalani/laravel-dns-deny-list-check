@@ -32,7 +32,7 @@ return [
 
 ```php
 $check = new palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheck();
-echo $check->echoPhrase('Hello, palPalani!');
+echo $check->check('127.0.0.1');
 ```
 
 ## Testing
