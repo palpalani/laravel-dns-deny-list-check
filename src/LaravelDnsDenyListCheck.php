@@ -87,11 +87,11 @@ class LaravelDnsDenyListCheck
         $result = [];
         //$ip = '69.44.44.33';
 
-        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+        if (! filter_var($ip, FILTER_VALIDATE_IP)) {
             return [
                 'success' => false,
                 'message' => 'Invalid IP address',
-                'data' => null
+                'data' => null,
             ];
         }
 
@@ -114,7 +114,7 @@ class LaravelDnsDenyListCheck
         return [
             'success' => true,
             'message' => '',
-            'data' => $result
+            'data' => $result,
         ];
     }
 }
