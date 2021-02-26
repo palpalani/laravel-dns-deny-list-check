@@ -27,13 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PalPalani\\LaravelDnsDenyListCheck\\": "src",
-            "PalPalani\\LaravelDnsDenyListCheck\\Database\\Factories\\": "database/factories"
+            "palPalani\\LaravelDnsDenyListCheck\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PalPalani\\LaravelDnsDenyListCheck\\Tests\\": "tests"
+            "palPalani\\LaravelDnsDenyListCheck\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -47,10 +46,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "PalPalani\\LaravelDnsDenyListCheck\\LaravelDnsDenyListCheckServiceProvider"
+                "palPalani\\LaravelDnsDenyListCheck\\LaravelDnsDenyListCheckServiceProvider"
             ],
             "aliases": {
-                "LaravelDnsDenyListCheck": "PalPalani\\LaravelDnsDenyListCheck\\LaravelDnsDenyListCheckFacade"
+                "LaravelDnsDenyListCheck": "palPalani\\LaravelDnsDenyListCheck\\LaravelDnsDenyListCheckFacade"
             }
         }
     },

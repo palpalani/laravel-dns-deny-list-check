@@ -18,7 +18,7 @@ composer require palpalani/laravel-dns-deny-list-check
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="PalPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheckServiceProvider" --tag="laravel-dns-deny-list-check-config"
+php artisan vendor:publish --provider="palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheckServiceProvider" --tag="laravel-dns-deny-list-check-config"
 ```
 
 This is the contents of the published config file:
@@ -31,8 +31,8 @@ return [
 ## Usage
 
 ```php
-$laravel-dns-deny-list-check = new PalPalani\LaravelDnsDenyListCheck();
-echo $laravel-dns-deny-list-check->echoPhrase('Hello, PalPalani!');
+$check = new palPalani\LaravelDnsDenyListCheck();
+echo $check->echoPhrase('Hello, palPalani!');
 ```
 
 ## Testing

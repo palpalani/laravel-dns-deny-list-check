@@ -1,10 +1,10 @@
 <?php
 
-namespace PalPalani\LaravelDnsDenyListCheck;
+namespace palPalani\LaravelDnsDenyListCheck;
 
-use PalPalani\LaravelDnsDenyListCheck\Commands\LaravelDnsDenyListCheckCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use palPalani\LaravelDnsDenyListCheck\Commands\LaravelDnsDenyListCheckCommand;
 
 class LaravelDnsDenyListCheckServiceProvider extends PackageServiceProvider
 {
@@ -17,9 +17,9 @@ class LaravelDnsDenyListCheckServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-dns-deny-list-check')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel_dns_deny_list_check_table')
-            ->hasCommand(LaravelDnsDenyListCheckCommand::class);
+            ->hasConfigFile();
+            //->hasViews()
+            //->hasMigration('create_laravel_dns_deny_list_check_table')
+            //->hasCommand(LaravelDnsDenyListCheckCommand::class);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace PalPalani\LaravelDnsDenyListCheck\Tests;
+namespace palPalani\LaravelDnsDenyListCheck\Tests;
 
 class ExampleTest extends TestCase
 {

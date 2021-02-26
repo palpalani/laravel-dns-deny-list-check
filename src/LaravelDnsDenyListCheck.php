@@ -1,6 +1,6 @@
 <?php
 
-namespace PalPalani\LaravelDnsDenyListCheck;
+namespace palPalani\LaravelDnsDenyListCheck;
 
 class LaravelDnsDenyListCheck
 {

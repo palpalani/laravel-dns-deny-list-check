@@ -1,11 +1,11 @@
 <?php
 
-namespace PalPalani\LaravelDnsDenyListCheck;
+namespace palPalani\LaravelDnsDenyListCheck;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \PalPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheck
+ * @see \palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheck
  */
 class LaravelDnsDenyListCheckFacade extends Facade
 {

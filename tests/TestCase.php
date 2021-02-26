@@ -1,10 +1,10 @@
 <?php
 
-namespace PalPalani\LaravelDnsDenyListCheck\Tests;
+namespace palPalani\LaravelDnsDenyListCheck\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use PalPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheckServiceProvider;
+use palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheckServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'PalPalani\\LaravelDnsDenyListCheck\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'palPalani\\LaravelDnsDenyListCheck\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
