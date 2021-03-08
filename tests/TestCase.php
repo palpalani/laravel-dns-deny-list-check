@@ -2,7 +2,6 @@
 
 namespace palPalani\LaravelDnsDenyListCheck\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 use palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheckServiceProvider;
 
