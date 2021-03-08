@@ -18,8 +18,5 @@ class LaravelDnsDenyListCheckServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-dns-deny-list-check')
             ->hasConfigFile();
-        //->hasViews()
-            //->hasMigration('create_laravel_dns_deny_list_check_table')
-            //->hasCommand(LaravelDnsDenyListCheckCommand::class);
     }
 }
