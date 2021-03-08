@@ -74,7 +74,7 @@ class LaravelDnsDenyListCheck
             "xbl.spamhaus.org",
             "z.mailspike.net",
             "zen.spamhaus.org",
-            "zombie.dnsbl.sorbs.net"
+            "zombie.dnsbl.sorbs.net",
             /*
             "dnsbl-1.uceprotect.net",
             "dnsbl-2.uceprotect.net",
