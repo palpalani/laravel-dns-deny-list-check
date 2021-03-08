@@ -53,6 +53,10 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/palpalani/laravel-dns-deny-list-check/tags).
+
 ## Credits
 
 - [palPalani](https://github.com/palpalani)
