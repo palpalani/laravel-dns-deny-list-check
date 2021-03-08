@@ -1,12 +1,14 @@
-# checks if the given IP address or hostname is blacklisted on the configured dnsbl servers
+# Email Deny List (blacklist) Check - IP Deny List (blacklist) Check
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/palpalani/laravel-dns-deny-list-check/run-tests?label=tests)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3ATests+branch%3Amaster)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/palpalani/laravel-dns-deny-list-check/Check%20&%20fix%20styling?label=code%20style)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
 
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Deny list (blacklist) checker will test a mail server IP address against over 50 DNS 
+based email blacklists. (Commonly called Realtime blacklist, DNSBL or RBL).  
+If your mail server has been blacklisted, some email you send may not be delivered.  
+Email blacklists are a common way of reducing spam.
 
 ## Installation
 
@@ -25,6 +27,7 @@ This is the contents of the published config file:
 
 ```php
 return [
+
 ];
 ```
 

@@ -3,7 +3,9 @@
     "description": "checks if the given IP address or hostname is blacklisted on the configured dnsbl servers",
     "keywords": [
         "palpalani",
-        "laravel-dns-deny-list-check"
+        "laravel-dns-deny-list-check",
+        "sending-ip",
+        "email"
     ],
     "homepage": "https://github.com/palpalani/laravel-dns-deny-list-check",
     "license": "MIT",
