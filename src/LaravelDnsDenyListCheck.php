@@ -232,11 +232,10 @@ class LaravelDnsDenyListCheck
                     'listed' => $listed,
                 ];
             } catch (\Throwable $exception) {
-
                 $result[] = [
                     'host' => $host,
                     'listed' => 'Unknown',
-                    'message' => $exception->getMessage()
+                    'message' => $exception->getMessage(),
                 ];
             }
         }
