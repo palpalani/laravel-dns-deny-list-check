@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace palPalani\LaravelDnsDenyListCheck;
+namespace palPalani\DnsDenyListCheck;
 
-class LaravelDnsDenyListCheck
+class DnsDenyListCheck
 {
     /**
      * @param string $ip

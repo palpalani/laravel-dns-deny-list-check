@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace palPalani\LaravelDnsDenyListCheck;
+namespace palPalani\DnsDenyListCheck;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class LaravelDnsDenyListCheckServiceProvider extends PackageServiceProvider
+class DnsDenyListCheckServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {

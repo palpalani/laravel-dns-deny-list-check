@@ -1,8 +1,8 @@
 # Email Deny List (blacklist) Check - IP Deny List (blacklist) Check
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/palpalani/laravel-dns-deny-list-check/run-tests?label=tests)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3ATests+branch%3Amaster)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/palpalani/laravel-dns-deny-list-check/Check%20&%20fix%20styling?label=code%20style)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/palpalani/laravel-dns-deny-list-check/run-tests?label=tests)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3ATests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/palpalani/laravel-dns-deny-list-check/Check%20&%20fix%20styling?label=code%20style)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
 
 Deny list (blacklist) checker will test a mail server IP address against over 50 DNS 
@@ -20,7 +20,7 @@ composer require palpalani/laravel-dns-deny-list-check
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheckServiceProvider" --tag="laravel-dns-deny-list-check-config"
+php artisan vendor:publish --provider="palPalani\DnsDenyListCheck\DnsDenyListCheckServiceProvider" --tag="laravel-dns-deny-list-check-config"
 ```
 
 This is the contents of the published config file:
@@ -34,7 +34,7 @@ return [
 ## Usage
 
 ```php
-$check = new palPalani\LaravelDnsDenyListCheck\LaravelDnsDenyListCheck();
+$check = new palPalani\DnsDenyListCheck\DnsDenyListCheck();
 echo $check->check('127.0.0.1');
 ```
 
