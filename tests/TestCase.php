@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace palPalani\LaravelDnsDenyListCheck\Tests;
+namespace palPalani\DnsDenyListCheck\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use palPalani\LaravelDnsDenyListCheck\DnsDenyListCheckServiceProvider;
+use palPalani\DnsDenyListCheck\DnsDenyListCheckServiceProvider;
 
 class TestCase extends Orchestra
 {

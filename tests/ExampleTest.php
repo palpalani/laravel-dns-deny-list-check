@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace palPalani\LaravelDnsDenyListCheck\Tests;
+namespace palPalani\DnsDenyListCheck\Tests;
 
 class ExampleTest extends TestCase
 {
