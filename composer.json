@@ -47,10 +47,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "DnsDenyListCheckServiceProvider"
+                "palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider"
             ],
             "aliases": {
-                "DnsDenyListCheck": "DnsDenyListCheckFacade"
+                "DnsDenyListCheck": "palPalani\\DnsDenyListCheck\\DnsDenyListCheckFacade"
             }
         }
     },
