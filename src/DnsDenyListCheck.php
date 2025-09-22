@@ -129,10 +129,14 @@ class DnsDenyListCheck
      *
      * @return array<int, array{name: string, host: string, tier?: int, priority?: string}>
      */
-    private function validateAndSanitizeServers(array $servers): array
+    private function validateAndSanitizeServers(?array $servers): array
     {
         $validated = [];
-
+        
+        if ($servers === null) {
+            return $validated;
+        }
+        
         foreach ($servers as $server) {
             if (! is_array($server)) {
                 continue; // Skip invalid entries

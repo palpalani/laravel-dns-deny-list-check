@@ -71,10 +71,10 @@ class DnsDenyListCheckServiceProviderTest extends TestCase
 
         $hosts = array_column($config['servers'], 'host');
 
-        // Verify some expected DNSBL servers are present
-        $this->assertContains('zen.spamhaus.org', $hosts);
+        // Verify some expected DNSBL servers are present (updated for production-ready list)
         $this->assertContains('bl.spamcop.net', $hosts);
         $this->assertContains('b.barracudacentral.org', $hosts);
+        $this->assertContains('dnsbl-1.uceprotect.net', $hosts);
     }
 
     public function test_config_servers_have_tier_information()
@@ -232,9 +232,9 @@ class DnsDenyListCheckServiceProviderTest extends TestCase
         $this->assertIsArray($servers);
         $this->assertNotEmpty($servers);
 
-        // Verify critical tier 1 servers are present
+        // Verify critical tier 1 servers are present (updated for production-ready list)
         $hosts = array_column($servers, 'host');
-        $criticalServers = ['zen.spamhaus.org', 'bl.spamcop.net', 'b.barracudacentral.org'];
+        $criticalServers = ['bl.spamcop.net', 'b.barracudacentral.org', 'dnsbl-1.uceprotect.net'];
 
         foreach ($criticalServers as $server) {
             $this->assertContains($server, $hosts, "Critical server {$server} not found in config");
