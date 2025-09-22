@@ -30,13 +30,13 @@ class DnsDenyListCheck
         $reverseIp = \implode('.', \array_reverse(\explode('.', $ip)));
 
         foreach ($this->dnsblServers as $server) {
-            if (!isset($server['host']) || !is_string($server['host'])) {
+            if (! isset($server['host']) || ! is_string($server['host'])) {
                 continue;
             }
-            
+
             $host = $server['host'];
             try {
-                $dnsr = $reverseIp . '.' . $host . '.';
+                $dnsr = $reverseIp.'.'.$host.'.';
                 if (\checkdnsrr($dnsr, 'A')) {
                     $listed = true;
                 } else {

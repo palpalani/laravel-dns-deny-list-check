@@ -2,10 +2,10 @@
 
 /**
  * DNSBL/RBL Configuration - Curated for 2024-2025 Email Deliverability
- * 
+ *
  * This configuration includes only actively maintained, widely-adopted DNSBL services
  * that are actually used by major email providers (Gmail, Outlook, Yahoo, etc.)
- * 
+ *
  * References:
  * - https://github.com/tbreuss/dns-blacklist-check
  * - https://gist.github.com/tbreuss/74da96ff5f976ce770e6628badbd7dfc
@@ -55,5 +55,5 @@ return [
         // ['name' => 'UCEPROTECT L2', 'host' => 'dnsbl-2.uceprotect.net'],  // TOO AGGRESSIVE
         // ['name' => 'UCEPROTECT L3', 'host' => 'dnsbl-3.uceprotect.net'],  // TOO AGGRESSIVE
         // ['name' => 'Individual Spamhaus Lists', 'host' => 'sbl.spamhaus.org'],  // USE ZEN INSTEAD
-    ]
+    ],
 ];
