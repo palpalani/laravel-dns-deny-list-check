@@ -132,11 +132,11 @@ class DnsDenyListCheck
     private function validateAndSanitizeServers(?array $servers): array
     {
         $validated = [];
-        
+
         if ($servers === null) {
             return $validated;
         }
-        
+
         foreach ($servers as $server) {
             if (! is_array($server)) {
                 continue; // Skip invalid entries
