@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Use: https://github.com/tbreuss/dns-blacklist-check
+ * https://gist.github.com/tbreuss/74da96ff5f976ce770e6628badbd7dfc
+ * https://gist.github.com/michaeldyrynda/cd0039d18faf9f5a1ac5
+ * https://mxtoolbox.com/problem/blacklist/
+ */
+
 return [
     // List of all RBLs.
     'servers' => [
