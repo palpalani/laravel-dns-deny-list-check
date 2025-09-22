@@ -11,7 +11,7 @@ class DnsDenyListCheck
 
     public function __construct(?array $dnsblServers = null)
     {
-        $this->dnsblServers = $dnsblServers ?? config('dns-deny-list-check.servers', []);
+        $this->dnsblServers = $dnsblServers ?? config('dns-deny-list-check.servers') ?? [];
     }
 
     public function check(string $ip): array
@@ -30,6 +30,10 @@ class DnsDenyListCheck
         $reverseIp = \implode('.', \array_reverse(\explode('.', $ip)));
 
         foreach ($this->dnsblServers as $server) {
+            if (!isset($server['host']) || !is_string($server['host'])) {
+                continue;
+            }
+            
             $host = $server['host'];
             try {
                 $dnsr = $reverseIp . '.' . $host . '.';
