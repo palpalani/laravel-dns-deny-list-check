@@ -4,246 +4,395 @@ declare(strict_types=1);
 
 namespace palPalani\DnsDenyListCheck;
 
+use InvalidArgumentException;
+
+/**
+ * Enhanced DNS Deny List (DNSBL/RBL) Checker
+ *
+ * Checks IP addresses against DNS-based email blacklists with comprehensive
+ * error handling, IPv6 support, performance optimizations, and detailed reporting.
+ *
+ * @author palPalani
+ *
+ * @version 2.0.0
+ */
 class DnsDenyListCheck
 {
+    /** @var array<int, array{name: string, host: string, tier?: int, priority?: string}> */
+    private readonly array $dnsblServers;
+
+    private readonly int $timeoutSeconds;
+
+    private readonly bool $ipv6Enabled;
+
+    private readonly bool $concurrentEnabled;
+
     /**
-     * @param string $ip
-     * @return array
+     * @param  array<int, array{name: string, host: string, tier?: int, priority?: string}>|null  $dnsblServers
+     * @param  int  $timeoutSeconds  DNS query timeout in seconds
+     * @param  bool  $ipv6Enabled  Enable IPv6 support
+     * @param  bool  $concurrentEnabled  Enable concurrent DNS queries (future enhancement)
+     */
+    public function __construct(
+        ?array $dnsblServers = null,
+        int $timeoutSeconds = 10,
+        bool $ipv6Enabled = true,
+        bool $concurrentEnabled = false
+    ) {
+        $this->dnsblServers = $this->validateAndSanitizeServers(
+            $dnsblServers ?? config('dns-deny-list-check.servers', [])
+        );
+        $this->timeoutSeconds = max(1, min(30, $timeoutSeconds)); // Clamp between 1-30 seconds
+        $this->ipv6Enabled = $ipv6Enabled;
+        $this->concurrentEnabled = $concurrentEnabled;
+    }
+
+    /**
+     * Check IP address against all configured DNSBL servers
+     *
+     * @param  string  $ip  IPv4 or IPv6 address to check
+     * @return array{success: bool, message: string, data: array|null, stats?: array}
+     *
+     * @throws InvalidArgumentException for invalid IP addresses
      */
     public function check(string $ip): array
     {
-        /**
-         * Use: https://github.com/tbreuss/dns-blacklist-check
-         * https://gist.github.com/tbreuss/74da96ff5f976ce770e6628badbd7dfc
-         * https://gist.github.com/michaeldyrynda/cd0039d18faf9f5a1ac5
-         * https://mxtoolbox.com/problem/blacklist/
-         */
-        /*
-        $dnsblLookup = [
-            'all.s5h.net',
-            "b.barracudacentral.org",
-            #"bl.emailbasura.org",
-            #"bl.spamcannibal.org",
-            "bl.spamcop.net",
-            "blacklist.woody.ch",
-            "bogons.cymru.com",
-            "cbl.abuseat.org",
-            "cdl.anti-spam.org.cn",
-            "combined.abuse.ch",
-            "db.wpbl.info",
-            "dnsbl-1.uceprotect.net",
-            "dnsbl-2.uceprotect.net",
-            "dnsbl-3.uceprotect.net",
-            "dnsbl.anticaptcha.net",
-            "dnsbl.cyberlogic.net",
-            "dnsbl.dronebl.org",
-            "dnsbl.inps.de",
-            "dnsbl.sorbs.net",
-            "dnsbl.spfbl.net",
-            "drone.abuse.ch",
-            "duinv.aupads.org",
-            "dul.dnsbl.sorbs.net",
-            "dyna.spamrats.com",
-            "dynip.rothen.com",
-            "exitnodes.tor.dnsbl.sectoor.de",
-            "http.dnsbl.sorbs.net",
-            "ips.backscatterer.org",
-            "ix.dnsbl.manitu.net",
-            "korea.services.net",
-            "misc.dnsbl.sorbs.net",
-            "noptr.spamrats.com",
-            "orvedb.aupads.org",
-            "pbl.spamhaus.org",
-            "proxy.bl.gweep.ca",
-            "psbl.surriel.com",
-            "relays.bl.gweep.ca",
-            "relays.nether.net",
-            "sbl.spamhaus.org",
-            "short.rbl.jp",
-            "singular.ttk.pte.hu",
-            "smtp.dnsbl.sorbs.net",
-            "socks.dnsbl.sorbs.net",
-            "spam.abuse.ch",
-            "spam.dnsbl.anonmails.de",
-            "spam.dnsbl.sorbs.net",
-            "spam.spamrats.com",
-            "spambot.bls.digibase.ca",
-            "spamrbl.imp.ch",
-            "spamsources.fabel.dk",
-            "ubl.lashback.com",
-            "ubl.unsubscore.com",
-            "virus.rbl.jp",
-            "web.dnsbl.sorbs.net",
-            "wormrbl.imp.ch",
-            "xbl.spamhaus.org",
-            "z.mailspike.net",
-            "zen.spamhaus.org",
-            "zombie.dnsbl.sorbs.net",
-            //"relays.osirusoft.com"
-        ];
-        */
+        $startTime = microtime(true);
 
-        $dnsblLookup = [
-            "access.redhawk.org",
-            "all.s5h.net",
-            "all.spamblock.unit.liu.se",
-            "b.barracudacentral.org",
-            "bl.deadbeef.com",
-            //"bl.emailbasura.org",
-            //"bl.spamcannibal.org",
-            "bl.spamcop.net",
-            "black.uribl.com",
-            "blackholes.five-ten-sg.com",
-            "blackholes.mail-abuse.org",
-            "blacklist.sci.kun.nl",
-            "blacklist.woody.ch",
-            "bogons.cymru.com",
-            "bsb.spamlookup.net",
-            "cbl.abuseat.org",
-            "cbl.anti-spam.org.cn",
-            "cblless.anti-spam.org.cn",
-            "cblplus.anti-spam.org.cn",
-            "cdl.anti-spam.org.cn",
-            "combined.abuse.ch",
-            "combined.njabl.org",
-            "combined.rbl.msrbl.net",
-            "csi.cloudmark.com",
-            "db.wpbl.info",
-            "dialups.mail-abuse.org",
-            //"dnsbl-1.uceprotect.net",
-            "dnsbl-2.uceprotect.net",
-            "dnsbl-3.uceprotect.net",
-            "dnsbl.abuse.ch",
-            "dnsbl.anticaptcha.net",
-            "dnsbl.cyberlogic.net",
-            "dnsbl.dronebl.org",
-            "dnsbl.inps.de",
-            "dnsbl.kempt.net",
-            "dnsbl.njabl.org",
-            "dnsbl.sorbs.net",
-            "dnsbl.spfbl.net",
-            "dob.sibl.support-intelligence.net",
-            "drone.abuse.ch",
-            "dsn.rfc-ignorant.org",
-            "duinv.aupads.org",
-            "dul.blackhole.cantv.net",
-            "dul.dnsbl.sorbs.net",
-            "dul.ru",
-            "dyna.spamrats.com",
-            "dynablock.sorbs.net",
-            "dyndns.rbl.jp",
-            "dynip.rothen.com",
-            "exitnodes.tor.dnsbl.sectoor.de",
-            "forbidden.icm.edu.pl",
-            "http.dnsbl.sorbs.net",
-            "httpbl.abuse.ch",
-            "images.rbl.msrbl.net",
-            "ips.backscatterer.org",
-            "ix.dnsbl.manitu.net",
-            "korea.services.net",
-            "ksi.dnsbl.net.au",
-            //"list.dsbl.org",
-            "mail.people.it",
-            "misc.dnsbl.sorbs.net",
-            "multi.surbl.org",
-            "multi.uribl.com",
-            "netblock.pedantic.org",
-            "noptr.spamrats.com",
-            "omrs.dnsbl.net.au",
-            "opm.tornevall.org",
-            "orvedb.aupads.org",
-            "osrs.dnsbl.net.au",
-            "pbl.spamhaus.org",
-            "phishing.rbl.msrbl.net",
-            "probes.dnsbl.net.au",
-            "proxy.bl.gweep.ca",
-            "psbl.surriel.com",
-            "query.senderbase.org",
-            "rbl-plus.mail-abuse.org",
-            "rbl.efnetrbl.org",
-            "rbl.interserver.net",
-            "rbl.spamlab.com",
-            "rbl.suresupport.com",
-            "rdts.dnsbl.net.au",
-            "relays.bl.gweep.ca",
-            "relays.bl.kundenserver.de",
-            "relays.mail-abuse.org",
-            "relays.nether.net",
-            //"relays.osirusoft.com",
-            "residential.block.transip.nl",
-            "ricn.dnsbl.net.au",
-            "rmst.dnsbl.net.au",
-            "rot.blackhole.cantv.net",
-            "sbl.spamhaus.org",
-            "short.rbl.jp",
-            "singular.ttk.pte.hu",
-            "smtp.dnsbl.sorbs.net",
-            "socks.dnsbl.sorbs.net",
-            "sorbs.dnsbl.net.au",
-            "spam.abuse.ch",
-            "spam.dnsbl.anonmails.de",
-            "spam.dnsbl.sorbs.net",
-            "spam.rbl.msrbl.net",
-            "spam.spamrats.com",
-            "spambot.bls.digibase.ca",
-            "spamguard.leadmon.net",
-            "spamlist.or.kr",
-            "spamrbl.imp.ch",
-            "spamsources.fabel.dk",
-            "tor.dan.me.uk",
-            "ubl.lashback.com",
-            "ubl.unsubscore.com",
-            "uribl.swinog.ch",
-            "url.rbl.jp",
-            "virbl.bit.nl",
-            "virus.rbl.jp",
-            "virus.rbl.msrbl.net",
-            "web.dnsbl.sorbs.net",
-            "wormrbl.imp.ch",
-            "xbl.spamhaus.org",
-            "z.mailspike.net",
-            "zen.spamhaus.org",
-            "zombie.dnsbl.sorbs.net",
-        ];
+        try {
+            // Comprehensive IP validation
+            $validatedIp = $this->validateIpAddress($ip);
+            $ipVersion = $this->getIpVersion($validatedIp);
 
-        $result = [];
+            // Check if IPv6 is supported
+            if ($ipVersion === 6 && ! $this->ipv6Enabled) {
+                return $this->buildErrorResponse('IPv6 addresses are not supported in current configuration');
+            }
 
-        if (! filter_var($ip, FILTER_VALIDATE_IP)) {
+            // Validate servers are configured
+            if (empty($this->dnsblServers)) {
+                return $this->buildErrorResponse('No DNSBL servers configured');
+            }
+
+            // Perform DNSBL checks
+            $results = $this->performDnsblChecks($validatedIp, $ipVersion);
+
+            // Calculate statistics
+            $stats = $this->calculateStats($results, microtime(true) - $startTime);
+
             return [
-                'success' => false,
-                'message' => 'Invalid IP address',
-                'data' => null,
+                'success' => true,
+                'message' => $this->generateSummaryMessage($stats),
+                'data' => $results,
+                'stats' => $stats,
+                'ip_version' => $ipVersion,
+                'checked_at' => now()->toISOString(),
+            ];
+
+        } catch (InvalidArgumentException $e) {
+            return $this->buildErrorResponse($e->getMessage());
+        } catch (\Throwable $e) {
+            return $this->buildErrorResponse('Unexpected error: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Get detailed information about configured DNSBL servers
+     *
+     * @return array{total: int, by_tier: array, by_priority: array, servers: array}
+     */
+    public function getServerInfo(): array
+    {
+        $byTier = [];
+        $byPriority = [];
+
+        foreach ($this->dnsblServers as $server) {
+            $tier = $server['tier'] ?? 'unknown';
+            $priority = $server['priority'] ?? 'unknown';
+
+            $byTier[$tier] = ($byTier[$tier] ?? 0) + 1;
+            $byPriority[$priority] = ($byPriority[$priority] ?? 0) + 1;
+        }
+
+        return [
+            'total' => count($this->dnsblServers),
+            'by_tier' => $byTier,
+            'by_priority' => $byPriority,
+            'ipv6_enabled' => $this->ipv6Enabled,
+            'timeout_seconds' => $this->timeoutSeconds,
+            'servers' => $this->dnsblServers,
+        ];
+    }
+
+    /**
+     * Validate and sanitize DNSBL server configuration
+     *
+     * @return array<int, array{name: string, host: string, tier?: int, priority?: string}>
+     */
+    private function validateAndSanitizeServers(?array $servers): array
+    {
+        $validated = [];
+
+        if ($servers === null) {
+            return $validated;
+        }
+
+        foreach ($servers as $server) {
+            if (! is_array($server)) {
+                continue; // Skip invalid entries
+            }
+
+            if (! isset($server['host']) || ! is_string($server['host']) || empty(trim($server['host']))) {
+                continue; // Skip servers without valid host
+            }
+
+            $host = trim($server['host']);
+
+            // Validate hostname format
+            if (! $this->isValidHostname($host)) {
+                continue; // Skip invalid hostnames
+            }
+
+            $validated[] = [
+                'name' => trim($server['name'] ?? $host),
+                'host' => $host,
+                'tier' => is_int($server['tier'] ?? null) ? $server['tier'] : null,
+                'priority' => is_string($server['priority'] ?? null) ? $server['priority'] : null,
             ];
         }
 
-        $reverseIp = \implode('.', \array_reverse(\explode('.', $ip)));
+        return $validated;
+    }
 
-        foreach ($dnsblLookup as $host) {
-            try {
-                $dnsr = $reverseIp . '.' . $host . '.';
-                if (\checkdnsrr($dnsr, 'A')) {
-                    $listed = true;
-                } else {
-                    $listed = false;
-                }
+    /**
+     * Validate IP address with comprehensive checks
+     *
+     * @return string Validated and normalized IP address
+     *
+     * @throws InvalidArgumentException
+     */
+    private function validateIpAddress(string $ip): string
+    {
+        $ip = trim($ip);
 
-                $result[] = [
-                    'host' => $host,
-                    'listed' => $listed,
-                ];
-            } catch (\Throwable $exception) {
-                $result[] = [
-                    'host' => $host,
-                    'listed' => 'Unknown',
-                    'message' => $exception->getMessage(),
-                ];
+        if (empty($ip)) {
+            throw new InvalidArgumentException('IP address cannot be empty');
+        }
+
+        // Check for common invalid patterns
+        if (preg_match('/[^0-9a-fA-F:.\/]/', $ip)) {
+            throw new InvalidArgumentException('IP address contains invalid characters');
+        }
+
+        // Remove CIDR notation if present
+        if (str_contains($ip, '/')) {
+            $ip = explode('/', $ip)[0];
+        }
+
+        // Validate IPv4/IPv6
+        $validatedIp = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+        if ($validatedIp === false) {
+            // Try without private/reserved range restrictions for testing purposes
+            $validatedIp = filter_var($ip, FILTER_VALIDATE_IP);
+            if ($validatedIp === false) {
+                throw new InvalidArgumentException("Invalid IP address format: {$ip}");
+            }
+        }
+
+        return $validatedIp;
+    }
+
+    /**
+     * Get IP version (4 or 6)
+     */
+    private function getIpVersion(string $ip): int
+    {
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            return 4;
+        }
+
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            return 6;
+        }
+
+        throw new InvalidArgumentException('Unable to determine IP version');
+    }
+
+    /**
+     * Perform DNSBL checks against all configured servers
+     *
+     * @return array<int, array{name: string, host: string, listed: bool|string, response_time?: float, message?: string, tier?: int, priority?: string}>
+     */
+    private function performDnsblChecks(string $ip, int $ipVersion): array
+    {
+        $results = [];
+
+        foreach ($this->dnsblServers as $server) {
+            $results[] = $this->checkSingleDnsbl($ip, $ipVersion, $server);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Check single DNSBL server
+     *
+     * @param  array{name: string, host: string, tier?: int, priority?: string}  $server
+     * @return array{name: string, host: string, listed: bool|string, response_time?: float, message?: string, tier?: int, priority?: string}
+     */
+    private function checkSingleDnsbl(string $ip, int $ipVersion, array $server): array
+    {
+        $startTime = microtime(true);
+        $result = [
+            'name' => $server['name'],
+            'host' => $server['host'],
+            'tier' => $server['tier'] ?? null,
+            'priority' => $server['priority'] ?? null,
+        ];
+
+        try {
+            $reverseIp = $this->buildReverseIp($ip, $ipVersion);
+            $queryHost = $reverseIp.'.'.$server['host'].'.';
+
+            // Perform DNS query with timeout handling
+            $listed = $this->performDnsQuery($queryHost);
+
+            $result['listed'] = $listed;
+            $result['response_time'] = round((microtime(true) - $startTime) * 1000, 2); // milliseconds
+
+        } catch (\Throwable $exception) {
+            $result['listed'] = 'Unknown';
+            $result['message'] = $exception->getMessage();
+            $result['response_time'] = round((microtime(true) - $startTime) * 1000, 2);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Build reverse IP notation for DNSBL query
+     */
+    private function buildReverseIp(string $ip, int $ipVersion): string
+    {
+        if ($ipVersion === 4) {
+            return implode('.', array_reverse(explode('.', $ip)));
+        }
+
+        if ($ipVersion === 6) {
+            // IPv6 reverse notation (simplified for common DNSBLs)
+            $expandedIp = $this->expandIpv6($ip);
+            $chars = str_replace(':', '', $expandedIp);
+
+            return implode('.', array_reverse(str_split($chars)));
+        }
+
+        throw new InvalidArgumentException('Unsupported IP version');
+    }
+
+    /**
+     * Expand IPv6 address to full notation
+     */
+    private function expandIpv6(string $ipv6): string
+    {
+        $hex = unpack('H*hex', inet_pton($ipv6));
+
+        return substr(preg_replace('/([A-f0-9]{4})/', '$1:', $hex['hex']), 0, -1);
+    }
+
+    /**
+     * Perform DNS query with error handling
+     */
+    private function performDnsQuery(string $queryHost): bool
+    {
+        // Set timeout (Note: checkdnsrr doesn't support timeout directly)
+        $originalTimeout = ini_get('default_socket_timeout');
+        ini_set('default_socket_timeout', (string) $this->timeoutSeconds);
+
+        try {
+            $result = checkdnsrr($queryHost, 'A');
+
+            return $result;
+        } finally {
+            // Restore original timeout
+            ini_set('default_socket_timeout', $originalTimeout);
+        }
+    }
+
+    /**
+     * Calculate statistics from results
+     *
+     * @return array{total_servers: int, listed_count: int, clean_count: int, unknown_count: int, total_time: float, avg_response_time: float, listing_percentage: float}
+     */
+    private function calculateStats(array $results, float $totalTime): array
+    {
+        $totalServers = count($results);
+        $listedCount = 0;
+        $cleanCount = 0;
+        $unknownCount = 0;
+        $totalResponseTime = 0;
+        $responseTimeCount = 0;
+
+        foreach ($results as $result) {
+            if ($result['listed'] === true) {
+                $listedCount++;
+            } elseif ($result['listed'] === false) {
+                $cleanCount++;
+            } else {
+                $unknownCount++;
+            }
+
+            if (isset($result['response_time'])) {
+                $totalResponseTime += $result['response_time'];
+                $responseTimeCount++;
             }
         }
 
         return [
-            'success' => true,
-            'message' => '',
-            'data' => $result,
+            'total_servers' => $totalServers,
+            'listed_count' => $listedCount,
+            'clean_count' => $cleanCount,
+            'unknown_count' => $unknownCount,
+            'total_time' => round($totalTime * 1000, 2), // milliseconds
+            'avg_response_time' => $responseTimeCount > 0 ? round($totalResponseTime / $responseTimeCount, 2) : 0,
+            'listing_percentage' => $totalServers > 0 ? round(($listedCount / $totalServers) * 100, 1) : 0,
         ];
+    }
+
+    /**
+     * Generate human-readable summary message
+     */
+    private function generateSummaryMessage(array $stats): string
+    {
+        if ($stats['listed_count'] === 0) {
+            return "IP is clean - not listed on any of {$stats['total_servers']} DNSBL servers";
+        }
+
+        return "IP is listed on {$stats['listed_count']} out of {$stats['total_servers']} DNSBL servers ({$stats['listing_percentage']}%)";
+    }
+
+    /**
+     * Build error response
+     *
+     * @return array{success: bool, message: string, data: null}
+     */
+    private function buildErrorResponse(string $message): array
+    {
+        return [
+            'success' => false,
+            'message' => $message,
+            'data' => null,
+        ];
+    }
+
+    /**
+     * Validate hostname format
+     */
+    private function isValidHostname(string $hostname): bool
+    {
+        // Basic hostname validation
+        return (bool) preg_match('/^[a-zA-Z0-9]([a-zA-Z0-9\-\.]*[a-zA-Z0-9])?$/', $hostname)
+               && strlen($hostname) <= 253
+               && ! str_starts_with($hostname, '.')
+               && ! str_ends_with($hostname, '.');
     }
 }

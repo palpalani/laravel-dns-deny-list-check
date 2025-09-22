@@ -1,0 +1,82 @@
+Name,Query Domain/Zone,Maintained By,Primary Use Case,Supports IP (reverse IP) lookup (rDNS),Notes / Adoption Level
+Spamhaus ZEN,zen.spamhaus.org,Spamhaus,Combined IP blocklist (SBL+XBL+PBL),Yes,Top-tier — widely used by major providers
+Spamhaus SBL,sbl.spamhaus.org,Spamhaus,Direct spam sources / botnets,Yes,High impact
+Spamhaus XBL,xbl.spamhaus.org,Spamhaus,Compromised hosts / exploits / botnets,Yes,High impact
+Spamhaus PBL,pbl.spamhaus.org,Spamhaus,Policy blocklist (dynamic/end-user IPs),Yes,Common in filters
+Spamhaus DBL,dbl.spamhaus.org,Spamhaus,Domain URIs used in spam,No,Domain/URI list (URIBL-like)
+SpamCop,bl.spamcop.net,SpamCop/Cisco,User-reported spam sources,Yes,Long-standing, widely referenced
+Barracuda Reputation List,b.barracudacentral.org,Barracuda Networks,IP reputation used by Barracuda appliances,Yes,Common in corporate gateways
+SORBS,dnsbl.sorbs.net / various SORBS zones,SORBS (Proofpoint),Open relays / dynamic / compromised hosts,Yes,Aggressive — risk of false positives
+SURBL,multi.surbl.org,SURBL,URI domains in message bodies,No,Used for URL-based filtering
+URIBL,black.uribl.com / multi URIBL zones,URIBL project,URI/domain lists from spam,No,Content / URL filtering
+Invaluement,dnsbl.invaluement.com,Invaluement,URI & IP spam,No/Yes,Provides ivmuri (domain) and ivmsip (IP); mixed usage
+PSBL,psbl.surriel.com,PSBL project,IPs seen by passive spam traps,Yes,Lightweight; lower false positives
+Backscatterer,ips.backscatterer.org,Backscatterer.org,Backscatter/backscatter sources,Yes,Specific for bounce/backscatter
+DroneBL,drone.abuse.ch / dronebl.org,Abuse.ch,IPs seen distributing malware/spam,Yes,Security-focused
+UCEPROTECT dnsbl-1.uceprotect.net / dnsbl-2 / dnsbl-3,uceprotect,Abuse / spam / botnets,Yes,Moderately used; varying severity tiers
+SpamRATS,dyna.spamrats.com / spam.spamrats.com,SpamRATS,Dynamic IPs / botnets / spam,Yes,Moderately used
+RBL.SORBS (specific zones) ,dul.dnsbl.sorbs.net (and many more),SORBS,Dynamic / dialups / relays,Yes,Many granular SORBS zones
+rbl.spamlab.com,rbl.spamlab.com,Spamlab project,General spam RBL,Yes,Used by smaller monitors
+bl.spamcannibal.org,bl.spamcannibal.org,SpamCannibal,Spam sources,Yes,Lower-profile list
+bl.score.senderscore.com,bl.score.senderscore.com,Validity (ReturnPath),IP reputation,Yes,Proprietary/paid influence
+bl.blocklist.de,bl.blocklist.de,Blocklist.de,Open proxies / relays / spambots,Yes,Used in Europe
+bl.mailspike.net,bl.mailspike.net,Mailspike,Spammer IPs and behavior,Yes,Moderately used
+abuse.ch (various) ,combined.abuse.ch / malwaredomains,Abuse.ch,Malware / botnet / malware hosts,Yes,Security-focused lists
+spamsources.fabel.dk,spamsources.fabel.dk,Spammersources project,Known spam source IPs,Yes,Historical list
+bogons.cymru.com,bogons.cymru.com,Team Cymru,Bogon IP ranges (invalid/unallocated),Yes,Important to detect invalid IPs
+dnsrbl (DNS Realtime Blackhole List),dnsrbl; various zones,DNSRBL project,IPs seen in honeypots/spamtraps,Yes,Included in many checks
+dyna.spamrats.com, dyna.spamrats.com,SpamRATS,Dynamic ranges / spammers,Yes,Moderate usage
+noptr.spamrats.com,noptr.spamrats.com,SpamRATS,No PTR/reverse info issues,Yes,Targets hosts lacking PTR records
+bl.konstant.no,bl.konstant.no,Konstant/individual,Spam sources,Yes,Lower-profile
+bl.nosolicitado.org,bl.nosolicitado.org,Nosolicitado,Spam sources,Yes,Spain/Latin-focused lists
+bl.scientificspam.net,bl.scientificspam.net,ScientificSpam,Targeted spam sources,Yes,History of targeted lists
+rbl.efnet.org,rbl.efnet.org,EFnet / open-source community,General abuse lists,Yes,Lower adoption
+bl.rbl.scrolloutf1.com,bl.rbl.scrolloutf1.com,Scrollout F1 Spamhaus,Community blocklist,Yes,Used with Scrollout F1 installs
+all.s5h.net,all.s5h.net,s5h,Various spam lists aggregated,Yes,Aggregator-style list
+all.rbl.jp,all.rbl.jp,RBL.JP,RBL used in Japan,Yes,Regionally used
+virus.rbl.jp,virus.rbl.jp,RBL.JP,Malware distribution IPs,Yes,Japan/Asia focused
+backscatter.spameatingmonkey.net,backscatter.spameatingmonkey.net,Spameatingmonkey,Backscatter and forged bounce sources,Yes,Specific use-case
+bl.nszones.com,bl.nszones.com,NSZones,Spam sources,Yes,Lower-profile list
+bl.nosolicitado.org,bl.nosolicitado.org,Nosolicitado,Spam sources,Yes,Regional adoption
+bl.0spam.org,bl.0spam.org,0spam.org,Spam sources,Yes,Lower-profile
+combo.abuse.ch,combined.abuse.ch,Abuse.ch,Combined abuse sources,Yes,Security-oriented aggregation
+phishing.rbl.msrbl.net,phishing.rbl.msrbl.net,MSRBL project,Phishing domains/IPs,Yes/No,Often domain-focused; treat as mixed
+rbl.suresupport.com,rbl.suresupport.com,SureSupport,RBL for spam,Yes,Lower adoption
+rbl.spamhaus.org (legacy),sbl-xbl.spamhaus.org,Spamhaus (legacy),Legacy combined queries,Yes,Use ZEN instead
+bl.drmx.org,bl.drmx.org,DRMX,Spam sources,Yes,Lower-profile
+bl.spamcannibal.org,bl.spamcannibal.org,SpamCannibal,Spam sources,Yes,Lower-profile
+bl.spamcop.net (alias) ,bl.spamcop.net,SpamCop,Spam reporter RBL,Yes,High usage
+bl.konstant.no,bl.konstant.no,Konstant,Spam sources,Yes,Lower-profile
+honeypot lists (various),honeypot.*.zones,Operators of honeypots,Honeypot identified spammers,Yes,Varies by operator
+rbl.mailspike.net,rbl.mailspike.net,Mailspike,Abusive IPs,Yes,Paid/proprietary influence
+rbl.suresupport.com,rbl.suresupport.com,SureSupport,General spam lists,Yes,Lower adoption
+bl.score.senderscore.com,bl.score.senderscore.com,ReturnPath/Validity,IP reputationscore-based,Yes,Commercial influence
+ubl.unsubscore.com,ubl.unsubscore.com,Unsubscore,Unsubscribe abuse,Yes,Specialized
+ubl.lashback.com,ubl.lashback.com,Lashback project,Automatic spam sinkhole entries,Yes,Lower-profile
+spam.spamrats.com,spam.spamrats.com,SpamRATS,Spam sources,Yes,Moderate use
+all.spamrats.com,all.spamrats.com,SpamRATS,Aggregate spamrats zones,Yes,Moderate use
+proxy.bl.gweep.ca,proxy.bl.gweep.ca,Gweep,Proxy / open proxies,Yes,Specialized
+relays.bl.gweep.ca,relays.bl.gweep.ca,Gweep,Open relays,Yes,Specialized
+blocklist.woody.ch,blacklist.woody.ch,Woody/individual,Spam sources,Yes,Lower-profile
+rbl.blocklist.de,bl.blocklist.de,blocklist.de,Open proxies/spammers,Yes,European adoption
+z.mailspike.net,z.mailspike.net,Mailspike,Spam IPs,Yes,Monitor lists
+ubl.unsubscore.com,ubl.unsubscore.com,Unsubscore,Unsubscribe spam tracking,Yes,Specialized
+combined.rbl.msrbl.net,combined.rbl.msrbl.net,MSRBL,Combined lists incl. phishing,Yes,Regional / project-based
+dnsbl.dnswarden.com,dnsbl.dnswarden.com,DNS Warden,Spam IPs,Yes,Lower-profile
+dnsbl.njabl.org,dnsbl.njabl.org,NJABL (historic),Spam and open proxies,Yes (many NJABL zones are defunct),Some NJABL zones are now offline; treat as legacy
+dnsbl-1.uceprotect.net,dnsbl-1.uceprotect.net,uceprotect,IP reputation tier 1,Yes,Use with caution (aggregate tiers)
+dnsbl-2.uceprotect.net,dnsbl-2.uceprotect.net,uceprotect,IP reputation tier 2,Yes,As above
+dnsbl-3.uceprotect.net,dnsbl-3.uceprotect.net,uceprotect,IP reputation tier 3,Yes,As above
+bl.rbl.scrolloutf1.com,bl.rbl.scrolloutf1.com,Scrollout F1,Community spam list,Yes,Used with Scrollout F1 installs
+psbl.surriel.com,psbl.surriel.com,PSBL,Passive spamtrap list,Yes,Lightweight detection
+rbl.suresupport.com,rbl.suresupport.com,SureSupport,General abuse list,Yes,Low-profile
+rbl.spamlab.com,rbl.spamlab.com,Spamlab,Heuristic spamlist,Yes,Lower-profile
+dnsbl.ahbl.org (legacy),dnsbl.ahbl.org,AHBL (historic),Historic spam list,Yes,AHBL closed — treat as defunct
+blackholes.mail-abuse.org,blackholes.mail-abuse.org,Mail-abuse.org,Bogons & abuse,Yes,Used historically
+list.dsbl.org (defunct),list.dsbl.org,DSBL (defunct),Historic list — many entries stale,Yes/No,DSBL offline/deprecated
+bl.mailspike.net,bl.mailspike.net,Mailspike,Detected spam IPs,Yes,Moderate use
+rbl.suresupport.com,rbl.suresupport.com,SureSupport,General spam RBL,Yes,Lower adoption
+db.wpbl.info,db.wpbl.info,WPBL project,Wordpress comment spam domains (example),No/Yes,Domain vs IP depends on zone
+rbl.0spam.org,rbl.0spam.org,0Spam,Spam sources,Yes,Lower-profile
+wormrbl.imp.ch,wormrbl.imp.ch,Imp/SpamRBL,Malware-involved IPs,Yes,Security-oriented
+spamhaus_css,css.spamhaus.org,Spamhaus,Spamhaus CSS (child sexual content),Yes,Specialty list (sensitive)
