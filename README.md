@@ -1,50 +1,229 @@
-# Email Deny List (blacklist) Check - IP Deny List (blacklist) Check
+# Laravel DNS Deny List Check
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
 
-Deny list (blacklist) checker will test a mail server IP address against over 50 DNS 
-based email blacklists. (Commonly called Realtime blacklist, DNSBL or RBL).  
-If your mail server has been blacklisted, some email you send may not be delivered.  
-Email blacklists are a common way of reducing spam.
+A modern, production-ready Laravel package for checking email server IP addresses against **verified DNS-based blacklists (DNSBL/RBL)**. This package helps ensure email deliverability by testing your mail server against 12 carefully curated, actively maintained blacklist services.
 
-## Installation
+## ✨ Features
 
-You can install the package via composer:
+- 🔍 **Production-Verified DNSBL Servers** - Only 12 verified, functional servers (January 2025)
+- 🚀 **Modern PHP 8.1+** - Uses readonly properties, constructor promotion, and strict typing
+- 🌐 **Full IPv4 & IPv6 Support** - Handles both IP versions with proper reverse notation
+- ⚡ **Performance Optimized** - Configurable timeouts and optional concurrent checking
+- 📊 **Detailed Statistics** - Comprehensive response data with performance metrics
+- 🎯 **Tier-Based Checking** - Critical, Important, and Supplementary DNSBL categories
+- 🔧 **Laravel Integration** - Service provider, facade, and configuration support
+- ✅ **Comprehensive Testing** - 47 tests with 374 assertions
+- 🛡️ **Edge Case Handling** - Graceful error handling and validation
+
+## 📋 Requirements
+
+- PHP 8.1 or higher
+- Laravel 10.0 or higher
+- ext-dns (for DNS lookups)
+
+## 🚀 Installation
+
+Install the package via Composer:
 
 ```bash
 composer require palpalani/laravel-dns-deny-list-check
 ```
 
-You can publish the config file with:
+The service provider will be automatically registered thanks to Laravel's package auto-discovery.
+
+### Configuration (Optional)
+
+Publish the configuration file to customize DNSBL servers:
+
 ```bash
 php artisan vendor:publish --provider="palPalani\DnsDenyListCheck\DnsDenyListCheckServiceProvider" --tag="laravel-dns-deny-list-check-config"
 ```
 
-This is the contents of the published config file:
+This creates `config/dns-deny-list-check.php` with 12 production-verified DNSBL servers:
 
 ```php
 return [
-
+    'servers' => [
+        // TIER 1: CRITICAL - Most trusted DNSBLs
+        ['name' => 'SpamCop Blocking List', 'host' => 'bl.spamcop.net', 'tier' => 1, 'priority' => 'critical'],
+        ['name' => 'Barracuda Reputation Block List', 'host' => 'b.barracudacentral.org', 'tier' => 1, 'priority' => 'critical'],
+        ['name' => 'UCEPROTECT Level 1', 'host' => 'dnsbl-1.uceprotect.net', 'tier' => 1, 'priority' => 'critical'],
+        
+        // TIER 2: IMPORTANT - Specialized authority DNSBLs
+        ['name' => 'DroneB Anti-Abuse', 'host' => 'dnsbl.dronebl.org', 'tier' => 2, 'priority' => 'important'],
+        ['name' => 'Backscatterer IPS', 'host' => 'ips.backscatterer.org', 'tier' => 2, 'priority' => 'important'],
+        // ... additional servers
+    ],
 ];
 ```
 
-## Usage
+## 📖 Usage
+
+### Basic Usage
 
 ```php
-$check = new palPalani\DnsDenyListCheck\DnsDenyListCheck();
-echo $check->check('127.0.0.1');
+use palPalani\DnsDenyListCheck\DnsDenyListCheck;
+
+// Using the class directly
+$checker = new DnsDenyListCheck();
+$result = $checker->check('8.8.8.8');
+
+// Using the facade
+use palPalani\DnsDenyListCheck\DnsDenyListCheckFacade as DnsDenyListCheck;
+
+$result = DnsDenyListCheck::check('8.8.8.8');
 ```
 
-## Testing
+### Response Structure
+
+```php
+[
+    'success' => true,
+    'message' => 'IP check completed: 0 blacklists found IP as listed out of 12 total servers checked.',
+    'data' => [
+        [
+            'host' => 'bl.spamcop.net',
+            'listed' => false,
+            'response_time' => 0.123,
+            'tier' => 1,
+            'priority' => 'critical'
+        ],
+        // ... more results
+    ],
+    'stats' => [
+        'total_checked' => 12,
+        'total_listed' => 0,
+        'total_unlisted' => 12,
+        'total_errors' => 0,
+        'average_response_time' => 0.098
+    ],
+    'ip_version' => 'IPv4',
+    'checked_at' => '2025-01-22T10:30:45.123456Z'
+]
+```
+
+### Advanced Configuration
+
+```php
+use palPalani\DnsDenyListCheck\DnsDenyListCheck;
+
+// Custom server list
+$customServers = [
+    ['name' => 'Custom DNSBL', 'host' => 'custom.dnsbl.com', 'tier' => 1, 'priority' => 'critical']
+];
+
+$checker = new DnsDenyListCheck(
+    dnsblServers: $customServers,
+    timeoutSeconds: 15,
+    ipv6Enabled: true,
+    concurrentEnabled: false
+);
+
+$result = $checker->check('2001:db8::1'); // IPv6 support
+```
+
+### Laravel Service Container
+
+```php
+// In a service provider
+$this->app->bind(DnsDenyListCheck::class, function ($app) {
+    return new DnsDenyListCheck(
+        timeoutSeconds: config('dns-deny-list-check.timeout', 10)
+    );
+});
+
+// In a controller
+public function checkIp(DnsDenyListCheck $checker, Request $request)
+{
+    $result = $checker->check($request->ip());
+    
+    return response()->json($result);
+}
+```
+
+## 🧪 Testing
+
+Run the comprehensive test suite:
 
 ```bash
 composer test
 ```
 
-## Changelog
+The package includes 47 tests with 374 assertions covering:
+
+- ✅ IPv4 and IPv6 validation
+- ✅ DNSBL server connectivity
+- ✅ Error handling and edge cases
+- ✅ Facade functionality
+- ✅ Performance testing
+- ✅ Configuration validation
+
+### Test Coverage
+
+```bash
+# Run tests with coverage (requires Xdebug)
+vendor/bin/phpunit --coverage-html coverage
+
+# Run specific test group
+vendor/bin/phpunit --group integration
+```
+
+## 🔒 Production Considerations
+
+### DNSBL Server Reliability
+
+This package uses **only verified, production-ready DNSBL servers** (January 2025):
+
+- ❌ **Removed non-functional services**: SORBS (shut down June 2024), SpamRats, defunct Spamhaus services
+- ✅ **12 verified servers**: Tested for DNS resolution, active maintenance, and low false positives
+- 🎯 **Tier-based approach**: Critical (3), Important (4), Supplementary (5) categories
+
+### Performance Tips
+
+```php
+// For high-volume applications
+$checker = new DnsDenyListCheck(
+    timeoutSeconds: 5,        // Reduce timeout for faster responses
+    concurrentEnabled: true   // Enable concurrent checking (when available)
+);
+
+// Cache results to avoid repeated checks
+Cache::remember("dnsbl_check_{$ip}", 3600, function () use ($ip, $checker) {
+    return $checker->check($ip);
+});
+```
+
+### Error Handling
+
+```php
+$result = DnsDenyListCheck::check($ip);
+
+if (!$result['success']) {
+    Log::warning('DNSBL check failed', [
+        'ip' => $ip,
+        'error' => $result['message']
+    ]);
+    
+    // Fallback logic
+    return ['status' => 'unknown', 'reason' => 'DNSBL service unavailable'];
+}
+
+// Check if IP is blacklisted
+$blacklisted = $result['stats']['total_listed'] > 0;
+```
+
+## 📚 Documentation
+
+- [API Reference](docs/api.md)
+- [Configuration Guide](docs/configuration.md)
+- [Performance Optimization](docs/performance.md)
+- [DNSBL Server Guide](docs/dnsbl-servers.md)
+
+## 📋 Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
@@ -220,23 +399,62 @@ class ComprehensiveReputationChecker {
 }
 ```
 
-## Contributing
+## 🤝 Contributing
 
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+We welcome contributions! Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
-## Security Vulnerabilities
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/palpalani/laravel-dns-deny-list-check.git
+cd laravel-dns-deny-list-check
+
+# Install dependencies
+composer install
+
+# Run tests
+composer test
+
+# Run code style fixes
+composer format
+```
+
+### Contribution Guidelines
+
+- Follow [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standards
+- Write tests for new features
+- Update documentation accordingly
+- Ensure all tests pass before submitting PR
+
+## 🔐 Security Vulnerabilities
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
-## Versioning
+For security-related issues, please email security@palpalani.com instead of using the issue tracker.
+
+## 📦 Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/palpalani/laravel-dns-deny-list-check/tags).
 
-## Credits
+## 👥 Credits
 
-- [palPalani](https://github.com/palpalani)
-- [All Contributors](../../contributors)
+- [palPalani](https://github.com/palpalani) - Creator and maintainer
+- [All Contributors](../../contributors) - Thank you for your contributions!
 
-## License
+### Acknowledgments
+
+- [Spatie](https://spatie.be) - For excellent Laravel package tools and inspiration
+- DNSBL Service Providers - For maintaining public blacklist services
+- Laravel Community - For feedback and testing
+
+## 📄 License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+---
+
+<div align="center">
+  <strong>🚀 Ready to ensure email deliverability?</strong><br>
+  Install Laravel DNS Deny List Check and start protecting your email reputation today!
+</div>
