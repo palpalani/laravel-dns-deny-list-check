@@ -1,20 +1,16 @@
 <?php
 
 /**
- * PRODUCTION-READY DNSBL/RBL Configuration - Verified Active 2025
+ * DNSBL/RBL Configuration - Broader MXToolbox-Style Set (2025)
  *
- * ⚠️  CRITICAL: This list contains ONLY verified, functional DNSBL services
- * that are actively maintained and provide reliable results for email deliverability.
+ * This list includes a broader set of commonly referenced DNSBL services similar
+ * to those surfaced by MXToolbox. Some entries may be more aggressive, regional,
+ * or require registration for high-volume usage. Tune tiers/timeouts per needs.
  *
- * Last Verification: January 2025
- *
- * Each service has been tested for:
- * ✅ DNS resolution functionality
- * ✅ Reverse DNS query response
- * ✅ Active maintenance status
- * ✅ Low false positive rate
- *
- * Testing methodology: Reverse DNS queries using 127.0.0.2 test IP
+ * Notes:
+ * - Tier 1/2: Generally reputable and widely used
+ * - Tier 3: Supplementary or aggressive/regional lists; use with caution
+ * - Some providers (e.g., Spamhaus/CBL) may throttle or require registration
  */
 
 return [
@@ -23,8 +19,7 @@ return [
         // ==================== TIER 1: CRITICAL - VERIFIED WORKING ====================
         // These are the most trusted and widely-used DNSBLs by major email providers
 
-        // ❌ REMOVED: Spamhaus ZEN - DNS resolution issues detected in testing
-        // ['name' => 'Spamhaus ZEN', 'host' => 'zen.spamhaus.org', 'tier' => 1, 'priority' => 'critical'],
+        // Previously removed services can be enabled below if desired (now added under Tier 2)
 
         ['name' => 'SpamCop Blocking List', 'host' => 'bl.spamcop.net', 'tier' => 1, 'priority' => 'critical'],
         ['name' => 'Barracuda Reputation Block List', 'host' => 'b.barracudacentral.org', 'tier' => 1, 'priority' => 'critical'],
@@ -37,6 +32,10 @@ return [
         ['name' => 'Backscatterer IPS', 'host' => 'ips.backscatterer.org', 'tier' => 2, 'priority' => 'important'],
         ['name' => 'Blocklist.de', 'host' => 'bl.blocklist.de', 'tier' => 2, 'priority' => 'important'],
         ['name' => 'Mailspike Z', 'host' => 'z.mailspike.net', 'tier' => 2, 'priority' => 'important'],
+        // Additional widely-referenced DNSBLs (some may require registration for heavy use)
+        ['name' => 'Spamhaus ZEN', 'host' => 'zen.spamhaus.org', 'tier' => 2, 'priority' => 'important'],
+        ['name' => 'Composite Blocking List (CBL)', 'host' => 'cbl.abuseat.org', 'tier' => 2, 'priority' => 'important'],
+        ['name' => 'Mailspike BL', 'host' => 'bl.mailspike.net', 'tier' => 2, 'priority' => 'important'],
 
         // ==================== TIER 3: SUPPLEMENTARY - VERIFIED WORKING ====================
         // Additional verified lists for comprehensive coverage
@@ -46,6 +45,12 @@ return [
         ['name' => 'Spamsources Fabel', 'host' => 'spamsources.fabel.dk', 'tier' => 3, 'priority' => 'supplementary'],
         ['name' => 'Korea Services', 'host' => 'korea.services.net', 'tier' => 3, 'priority' => 'supplementary'],
         ['name' => 'Cymru Bogons', 'host' => 'bogons.cymru.com', 'tier' => 3, 'priority' => 'supplementary'],
+        // Broader MXToolbox-style supplementary set
+        ['name' => 'EFnet RBL', 'host' => 'rbl.efnetrbl.org', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'Tornevall DNSBL', 'host' => 'dnsbl.tornevall.org', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'SPFBL DNSBL', 'host' => 'dnsbl.spfbl.net', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'InterServer RBL', 'host' => 'rbl.interserver.net', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'GBUdb DNSBL', 'host' => 'dnsbl.gbudb.net', 'tier' => 3, 'priority' => 'supplementary'],
 
         // ==================== DEFUNCT/NON-FUNCTIONAL SERVICES ====================
         // The following services have been tested and found non-functional:
@@ -63,9 +68,7 @@ return [
         // ❌ ['name' => 'SpamRats Dynamic', 'host' => 'dyna.spamrats.com'] - NOT RESOLVING
         // ❌ ['name' => 'SpamRats NoPtr', 'host' => 'noptr.spamrats.com'] - NOT RESOLVING
 
-        // SPAMHAUS - RESOLUTION ISSUES (may require registration for high-volume use)
-        // ❌ ['name' => 'Spamhaus ZEN', 'host' => 'zen.spamhaus.org'] - DNS RESOLUTION FAILED
-        // ❌ ['name' => 'Composite Blocking List', 'host' => 'cbl.abuseat.org'] - DNS RESOLUTION FAILED
+        // SPAMHAUS/CBL - included above; may require registration for heavy use
 
         // OTHER NON-FUNCTIONAL
         // ❌ ['name' => 'Abuse.ch Combined', 'host' => 'combined.abuse.ch'] - NOT RESOLVING
