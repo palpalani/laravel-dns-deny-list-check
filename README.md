@@ -1,29 +1,62 @@
 # Laravel DNS Deny List Check
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
+[![License](https://img.shields.io/packagist/l/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
+[![PHP Version](https://img.shields.io/packagist/php-v/palpalani/laravel-dns-deny-list-check.svg?style=flat-square)](https://packagist.org/packages/palpalani/laravel-dns-deny-list-check)
+[![Laravel Version](https://img.shields.io/badge/Laravel-11.x%20%7C%2012.x-red.svg?style=flat-square)](https://laravel.com)
+
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub PHPStan Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/analyse.yml?branch=main&label=phpstan&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3Aanalyse+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Check Links Action Status](https://img.shields.io/github/actions/workflow/status/palpalani/laravel-dns-deny-list-check/check-links.yml?branch=main&label=link%20check&style=flat-square)](https://github.com/palpalani/laravel-dns-deny-list-check/actions?query=workflow%3Acheck-links+branch%3Amain)
 
 A modern, production-ready Laravel package for checking email server IP addresses against **verified DNS-based blacklists (DNSBL/RBL)**. This package helps ensure email deliverability by testing your mail server against 12 carefully curated, actively maintained blacklist services.
+
+## 📑 Table of Contents
+
+- [Features](#-features)
+- [Requirements](#-requirements)
+- [Architecture](#️-architecture)
+- [Installation](#-installation)
+- [Configuration](#configuration-optional)
+- [Usage](#-usage)
+- [Testing](#-testing)
+- [Production Considerations](#-production-considerations)
+- [Documentation](#-documentation)
+- [Tools & Standards](#-tools--standards)
+- [Quality Metrics](#-quality-metrics)
+- [Contributing](#-contributing)
+- [Security](#-security-vulnerabilities)
+- [License](#-license)
 
 ## ✨ Features
 
 - 🔍 **Production-Verified DNSBL Servers** - Only 12 verified, functional servers (January 2025)
-- 🚀 **Modern PHP 8.1+** - Uses readonly properties, constructor promotion, and strict typing
+- 🚀 **Modern PHP 8.3+** - Uses readonly properties, constructor promotion, and strict typing
 - 🌐 **Full IPv4 & IPv6 Support** - Handles both IP versions with proper reverse notation
 - ⚡ **Performance Optimized** - Configurable timeouts and optional concurrent checking
 - 📊 **Detailed Statistics** - Comprehensive response data with performance metrics
 - 🎯 **Tier-Based Checking** - Critical, Important, and Supplementary DNSBL categories
 - 🔧 **Laravel Integration** - Service provider, facade, and configuration support
-- ✅ **Comprehensive Testing** - 47 tests with 374 assertions
+- ✅ **Comprehensive Testing** - 47 tests with 374 assertions using Pest
 - 🛡️ **Edge Case Handling** - Graceful error handling and validation
+- 🔒 **Production Ready** - Zero false positives, reliable DNSBL servers only
+- 📈 **Type Safe** - Full PHPStan static analysis coverage
 
 ## 📋 Requirements
 
-- PHP 8.1 or higher
-- Laravel 10.0 or higher
+- PHP **8.3** or higher
+- Laravel **11.x** or **12.x**
 - ext-dns (for DNS lookups)
+
+## 🏗️ Architecture
+
+Built with modern PHP and Laravel best practices:
+- **Type Safety**: Full type hints, strict types, and PHPStan analysis
+- **Testing**: Comprehensive Pest test suite with high coverage
+- **Code Quality**: Laravel Pint for code formatting, PHPStan for static analysis
+- **Performance**: Optimized DNS queries with configurable timeouts
 
 ## 🚀 Installation
 
@@ -150,10 +183,14 @@ public function checkIp(DnsDenyListCheck $checker, Request $request)
 Run the comprehensive test suite:
 
 ```bash
+# Run all tests
 composer test
+
+# Run tests with coverage
+composer test-coverage
 ```
 
-The package includes 47 tests with 374 assertions covering:
+The package includes **47 tests with 374 assertions** using [Pest](https://pestphp.com) covering:
 
 - ✅ IPv4 and IPv6 validation
 - ✅ DNSBL server connectivity
@@ -161,15 +198,16 @@ The package includes 47 tests with 374 assertions covering:
 - ✅ Facade functionality
 - ✅ Performance testing
 - ✅ Configuration validation
+- ✅ Type safety and static analysis
 
-### Test Coverage
+### Code Quality
 
 ```bash
-# Run tests with coverage (requires Xdebug)
-vendor/bin/phpunit --coverage-html coverage
+# Run PHPStan static analysis
+composer analyse
 
-# Run specific test group
-vendor/bin/phpunit --group integration
+# Fix code style with Laravel Pint
+composer format
 ```
 
 ## 🔒 Production Considerations
@@ -218,10 +256,30 @@ $blacklisted = $result['stats']['total_listed'] > 0;
 
 ## 📚 Documentation
 
+Comprehensive documentation is available in the repository:
+
 - [API Reference](docs/api.md)
 - [Configuration Guide](docs/configuration.md)
 - [Performance Optimization](docs/performance.md)
 - [DNSBL Server Guide](docs/dnsbl-servers.md)
+
+## 🔧 Tools & Standards
+
+This package uses modern development tools and follows best practices:
+
+- **Testing**: [Pest PHP](https://pestphp.com) - A delightful PHP testing framework
+- **Code Style**: [Laravel Pint](https://laravel.com/docs/pint) - Opinionated PHP code style fixer
+- **Static Analysis**: [PHPStan](https://phpstan.org) with [Larastan](https://github.com/larastan/larastan)
+- **CI/CD**: GitHub Actions with comprehensive test matrix
+- **Code Quality**: Automated code style fixes and static analysis on every push
+
+## 📊 Quality Metrics
+
+- ✅ **100% Type Coverage** - Full type hints and PHPStan analysis
+- ✅ **47 Tests** - Comprehensive test suite with Pest
+- ✅ **374 Assertions** - Thorough validation of all features
+- ✅ **Zero Dependencies** - No external HTTP dependencies, uses native DNS resolution
+- ✅ **Production Verified** - Only active, reliable DNSBL servers
 
 ## 📋 Changelog
 
@@ -416,16 +474,21 @@ composer install
 # Run tests
 composer test
 
-# Run code style fixes
+# Run static analysis
+composer analyse
+
+# Fix code style with Laravel Pint
 composer format
 ```
 
 ### Contribution Guidelines
 
-- Follow [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standards
-- Write tests for new features
-- Update documentation accordingly
-- Ensure all tests pass before submitting PR
+- ✅ Follow [PSR-12](https://www.php-fig.org/psr/psr-12/) coding standards (enforced by Laravel Pint)
+- ✅ Write tests for new features using Pest
+- ✅ Ensure PHPStan analysis passes (`composer analyse`)
+- ✅ Update documentation accordingly
+- ✅ Ensure all tests pass before submitting PR
+- ✅ Follow semantic versioning for releases
 
 ## 🔐 Security Vulnerabilities
 

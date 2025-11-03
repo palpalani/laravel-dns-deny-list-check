@@ -51,6 +51,13 @@ return [
         ['name' => 'SPFBL DNSBL', 'host' => 'dnsbl.spfbl.net', 'tier' => 3, 'priority' => 'supplementary'],
         ['name' => 'InterServer RBL', 'host' => 'rbl.interserver.net', 'tier' => 3, 'priority' => 'supplementary'],
         ['name' => 'GBUdb DNSBL', 'host' => 'dnsbl.gbudb.net', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'BlockedServers RBL', 'host' => 'rbl.blockedservers.com', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'BlockedServers Spam', 'host' => 'spam.rbl.blockedservers.com', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'BlockedServers NetScan', 'host' => 'netscan.rbl.blockedservers.com', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => '0spam Main DNSBL', 'host' => 'bl.0spam.org', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => '0spam RBL', 'host' => 'rbl.0spam.org', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'Abuse.ro IP RBL', 'host' => 'rbl.abuse.ro', 'tier' => 3, 'priority' => 'supplementary'],
+        ['name' => 'TOR exit nodes (dan.me.uk)', 'host' => 'tor.dan.me.uk', 'tier' => 3, 'priority' => 'supplementary'],
 
         // ==================== DEFUNCT/NON-FUNCTIONAL SERVICES ====================
         // The following services have been tested and found non-functional:

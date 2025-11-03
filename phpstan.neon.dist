@@ -1,0 +1,28 @@
+parameters:
+    level: 5
+    paths:
+        - src
+        - tests
+    excludePaths:
+        analyseAndScan:
+            - vendor
+            - node_modules (?)
+            - bootstrap/cache (?)
+            - storage (?)
+            - build (?)
+
+    # Ignore specific errors (add as needed for false positives)
+    ignoreErrors:
+        - '#PHPDoc tag @var#'
+
+    # Laravel specific checks
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+
+    # Treat Laravel facades and magic methods
+    checkPhpDocMethodSignatures: true
+
+    # Deprecation rules
+    reportUnmatchedIgnoredErrors: false
+
+    # Memory limit for large files
+    tmpDir: %rootDir%/tmp

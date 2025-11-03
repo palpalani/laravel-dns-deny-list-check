@@ -1,32 +1,56 @@
 {
     "name": "palpalani/laravel-dns-deny-list-check",
-    "description": "checks if the given IP address or hostname is blacklisted on the configured dnsbl servers",
+    "type": "library",
+    "description": "A modern Laravel package for checking IP addresses against verified DNS-based blacklists (DNSBL/RBL) to ensure email deliverability",
     "keywords": [
-        "palpalani",
-        "laravel-dns-deny-list-check",
-        "sending-ip",
-        "email",
-        "blacklisted"
+        "laravel",
+        "laravel-package",
+        "dnsbl",
+        "rbl",
+        "dns-blacklist",
+        "dns-deny-list",
+        "email-deliverability",
+        "spam-protection",
+        "ip-blacklist",
+        "ipv4",
+        "ipv6",
+        "email-reputation",
+        "smtp",
+        "dns-query",
+        "blacklist-check"
     ],
-    "homepage": "https://github.com/palpalani/laravel-dns-deny-list-check",
     "license": "MIT",
     "authors": [
         {
             "name": "palPalani",
             "email": "palani.p@gmail.com",
-            "role": "Developer"
+            "role": "Developer",
+            "homepage": "https://github.com/palpalani"
+        }
+    ],
+    "homepage": "https://github.com/palpalani/laravel-dns-deny-list-check",
+    "support": {
+        "issues": "https://github.com/palpalani/laravel-dns-deny-list-check/issues",
+        "source": "https://github.com/palpalani/laravel-dns-deny-list-check",
+        "docs": "https://github.com/palpalani/laravel-dns-deny-list-check#readme"
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/palpalani"
         }
     ],
     "require": {
         "php": "^8.3",
-        "spatie/laravel-package-tools": "^1.1",
-        "illuminate/contracts": "^11.0|^12.0"
+        "ext-dns": "*",
+        "illuminate/contracts": "^11.0 || ^12.0",
+        "spatie/laravel-package-tools": "^1.1"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.14",
         "nunomaduro/collision": "^8.8",
-        "larastan/larastan": "^3.0",
-        "orchestra/testbench": "^10.0.0||^9.0.0",
+        "orchestra/testbench": "^9.0.0 || ^10.0.0",
         "pestphp/pest": "^4.0",
         "pestphp/pest-plugin-arch": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
@@ -34,6 +58,12 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0"
     },
+    "suggest": {
+        "ext-intl": "For better internationalization support",
+        "ext-curl": "For alternative HTTP-based DNSBL checks (if needed)"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "palPalani\\DnsDenyListCheck\\": "src"
@@ -44,29 +74,63 @@
             "palPalani\\DnsDenyListCheck\\Tests\\": "tests"
         }
     },
-    "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
-        "format": "vendor/bin/pint --parallel",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage"
-    },
     "config": {
-        "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
-        }
+        },
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "preferred-install": "dist"
     },
     "extra": {
         "laravel": {
-            "providers": [
-                "palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider"
-            ],
             "aliases": {
                 "DnsDenyListCheck": "palPalani\\DnsDenyListCheck\\DnsDenyListCheckFacade"
-            }
+            },
+            "providers": [
+                "palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider"
+            ]
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "scripts": {
+        "analyse": [
+            "@php vendor/bin/phpstan analyse"
+        ],
+        "format": [
+            "@php vendor/bin/pint --parallel"
+        ],
+        "format:test": [
+            "@php vendor/bin/pint --test --parallel"
+        ],
+        "test": [
+            "@php vendor/bin/pest"
+        ],
+        "test:coverage": [
+            "@php vendor/bin/pest --coverage"
+        ],
+        "test:unit": [
+            "@php vendor/bin/pest --filter Unit"
+        ],
+        "check": [
+            "@php vendor/bin/pint --test",
+            "@php vendor/bin/phpstan analyse",
+            "@php vendor/bin/pest"
+        ],
+        "post-autoload-dump": [
+            "@php -r \"if (file_exists('vendor/phpstan/phpstan/phpstan.phar')) { echo 'PHPStan is installed\\n'; }\""
+        ],
+        "post-install-cmd": [
+            "@php -r \"if (file_exists('vendor/laravel/pint/bin/pint')) { echo 'Laravel Pint is installed\\n'; }\""
+        ]
+    },
+    "scripts-descriptions": {
+        "analyse": "Run PHPStan static analysis",
+        "format": "Fix code style with Laravel Pint (parallel)",
+        "format:test": "Test code style without fixing",
+        "test": "Run Pest test suite",
+        "test:coverage": "Run tests with coverage report",
+        "test:unit": "Run unit tests only",
+        "check": "Run all quality checks (code style, static analysis, tests)"
+    }
 }

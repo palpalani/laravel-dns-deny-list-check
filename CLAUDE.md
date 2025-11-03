@@ -9,7 +9,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `composer test-coverage` - Run tests with HTML coverage report (outputs to coverage/)
 
 ### Code Quality  
-- `composer psalm` - Run Psalm static analysis
+- `composer analyse` - Run PHPStan static analysis
+- `composer format` - Run Laravel Pint to fix code style issues
 
 ## Architecture Overview
 
