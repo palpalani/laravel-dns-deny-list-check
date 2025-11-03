@@ -1,26 +1,24 @@
-name: Fix PHP code style issues
+name: PHPStan Analysis
 
 on:
   push:
     paths:
       - '**.php'
+      - 'phpstan.neon.dist'
+      - 'phpstan-baseline.neon'
   pull_request:
     paths:
       - '**.php'
-
-permissions:
-  contents: write
+      - 'phpstan.neon.dist'
+      - 'phpstan-baseline.neon'
 
 jobs:
-  php-code-styling:
+  phpstan:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -29,14 +27,15 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-phpstan-${{ hashFiles('composer.lock') }}
+
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Run Laravel Pint
-        run: vendor/bin/pint
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse
 
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v6
-        with:
-          commit_message: 'Fix styling'
-          file_pattern: '*.php'

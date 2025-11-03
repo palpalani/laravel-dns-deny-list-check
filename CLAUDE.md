@@ -10,6 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Code Quality  
 - `composer analyse` - Run PHPStan static analysis
+- `composer format` - Run Laravel Pint to fix code style issues
 
 ## Architecture Overview
 
