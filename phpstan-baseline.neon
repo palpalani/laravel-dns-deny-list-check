@@ -1,0 +1,85 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Property palPalani\\DnsDenyListCheck\\DnsDenyListCheck\:\:\$concurrentEnabled is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/DnsDenyListCheck.php
+
+		-
+			message: '#^Call to an undefined static method palPalani\\DnsDenyListCheck\\DnsDenyListCheckFacade\:\:check\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 10
+			path: tests/DnsDenyListCheckFacadeTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Illuminate\\\\Support\\\\Facades\\\\Facade'' and palPalani\\DnsDenyListCheck\\DnsDenyListCheckFacade will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DnsDenyListCheckFacadeTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DnsDenyListCheckFacadeTest.php
+
+		-
+			message: '#^Call to an undefined method palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider\:\:getPackage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/DnsDenyListCheckServiceProviderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Spatie\\\\LaravelPackageTools\\\\PackageServiceProvider'' and palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DnsDenyListCheckServiceProviderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DnsDenyListCheckServiceProviderTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) with ''data'' and array\{success\: bool, message\: string, data\: array\|null, stats\?\: array\} will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/DnsDenyListCheckTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) with ''message'' and array\{success\: bool, message\: string, data\: array\|null, stats\?\: array\} will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/DnsDenyListCheckTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) with ''success'' and array\{success\: bool, message\: string, data\: array\|null, stats\?\: array\} will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/DnsDenyListCheckTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\{success\: bool, message\: string, data\: array\|null, stats\?\: array\} will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/DnsDenyListCheckTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsBool\(\) with bool will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/DnsDenyListCheckTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/DnsDenyListCheckTest.php
+
+		-
+			message: '#^Parameter \#1 \$dnsblServers of class palPalani\\DnsDenyListCheck\\DnsDenyListCheck constructor expects array\<int, array\{name\: string, host\: string, tier\?\: int, priority\?\: string\}\>\|null, array\{array\{name\: ''Valid Server'', host\: ''valid\.example\.com''\}, array\{host\: ''missing\-name…''\}, array\{name\: ''Missing Host''\}, array\{\}\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/DnsDenyListCheckTest.php
