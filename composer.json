@@ -1,6 +1,7 @@
 {
     "name": "palpalani/laravel-dns-deny-list-check",
     "description": "checks if the given IP address or hostname is blacklisted on the configured dnsbl servers",
+    "license": "MIT",
     "keywords": [
         "palpalani",
         "laravel-dns-deny-list-check",
@@ -8,8 +9,6 @@
         "email",
         "blacklisted"
     ],
-    "homepage": "https://github.com/palpalani/laravel-dns-deny-list-check",
-    "license": "MIT",
     "authors": [
         {
             "name": "palPalani",
@@ -17,16 +16,17 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/palpalani/laravel-dns-deny-list-check",
     "require": {
         "php": "^8.3",
-        "spatie/laravel-package-tools": "^1.1",
-        "illuminate/contracts": "^11.0|^12.0"
+        "illuminate/contracts": "^11.0 || ^12.0",
+        "spatie/laravel-package-tools": "^1.1"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.14",
         "nunomaduro/collision": "^8.8",
-        "larastan/larastan": "^3.0",
-        "orchestra/testbench": "^10.0.0||^9.0.0",
+        "orchestra/testbench": "^9.0.0 || ^10.0.0",
         "pestphp/pest": "^4.0",
         "pestphp/pest-plugin-arch": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
@@ -34,6 +34,8 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "palPalani\\DnsDenyListCheck\\": "src"
@@ -44,29 +46,27 @@
             "palPalani\\DnsDenyListCheck\\Tests\\": "tests"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "DnsDenyListCheck": "palPalani\\DnsDenyListCheck\\DnsDenyListCheckFacade"
+            },
+            "providers": [
+                "palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider"
+            ]
+        }
+    },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "format": "vendor/bin/pint --parallel",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage"
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "palPalani\\DnsDenyListCheck\\DnsDenyListCheckServiceProvider"
-            ],
-            "aliases": {
-                "DnsDenyListCheck": "palPalani\\DnsDenyListCheck\\DnsDenyListCheckFacade"
-            }
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
